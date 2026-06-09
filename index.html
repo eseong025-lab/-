@@ -3,281 +3,357 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Special Pair Profile</title>
+    <title>영화 포스터 페어틀 메이커 v3</title>
     <style>
-        /* 1. 업로드한 font.ttf 파일을 웹폰트로 등록합니다 */
-        @font-face {
-            font-family: 'CustomFont'; /* 내가 코스타일에서 사용할 폰트 이름 정의 */
-            src: url('font.ttf') format('truetype'); /* 같은 폴더에 있는 font.ttf 파일 불러오기 */
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        /* 전반적인 레이아웃 초기화 */
-        *, *::before, *::after {
-            box-sizing: border-box;
+        /* [1. 전체 레이아웃 및 테마] */
+        :root {
+            --bg-color: #0d0d0d;
+            --text-color: #ffffff;
+            --accent-color: #e5e5e5;
+            --panel-bg: #1a1a1a;
         }
 
         body {
-            /* 2. 페이지 전체의 기본 폰트를 업로드한 폰트로 지정합니다 */
-            font-family: 'CustomFont', 'Noto Sans KR', sans-serif;
-            background-color: #faf6f0; /* 부드럽고 따뜻한 베이지 톤 배경 */
-            color: #3a3530;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
-            padding: 50px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 20px;
         }
 
-        /* 메인 컨테이너 */
-        .pair-container {
-            background: #ffffff;
-            border: 1px solid #eadecc;
-            border-radius: 24px;
-            padding: 50px 40px;
-            width: 100%;
-            max-width: 1100px;
-            box-shadow: 0 10px 30px rgba(165, 145, 120, 0.1);
-        }
-
-        /* 상단 타이틀 부모 */
-        .pair-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .pair-title {
-            font-family: 'CustomFont', serif; /* 타이틀에도 사용자 폰트 적용 */
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            color: #5c5246;
-            margin-bottom: 10px;
-        }
-
-        .pair-subtitle {
-            font-size: 13px;
-            color: #bfae99;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* 메인 레이아웃: 3단 분할 구성 */
-        .pair-content {
+        .main-container {
             display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            gap: 30px;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
         }
 
-        /* 왼쪽/오른쪽 캐릭터 카드 공통 */
-        .character-card {
+        /* [2. 제어판 스타일] */
+        .controls-panel {
             flex: 1;
-            background: #fdfcfb;
-            border: 1px solid #f3ece3;
-            border-radius: 18px;
-            padding: 30px 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .character-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(165, 145, 120, 0.15);
-        }
-
-        /* 더블 서클 이미지 시스템 */
-        .circle-group {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-bottom: 25px;
-            align-items: center;
-        }
-
-        .avatar-frame {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 4px solid #ffffff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            background-color: #f0eae1;
-            position: relative;
-        }
-
-        .avatar-frame.sub {
-            width: 90px;
-            height: 90px;
-            border: 3px solid #ffffff;
-            margin-top: -5px;
-        }
-
-        .avatar-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* 이름 영역 */
-        .character-name {
-            font-family: 'CustomFont', serif; /* 캐릭터 이름에도 사용자 폰트 적용 */
-            font-size: 22px;
-            font-weight: 700;
-            color: #4a4238;
-            margin-bottom: 15px;
-        }
-
-        /* 캐릭터 상세 정보 박스 */
-        .character-info {
-            width: 100%;
-            font-size: 13.5px;
-            line-height: 1.7;
-            color: #6b6155;
-            text-align: left;
-            background: #ffffff;
-            border: 1px solid #f0eae1;
+            min-width: 320px;
+            max-width: 400px;
+            background-color: var(--panel-bg);
+            padding: 30px;
             border-radius: 12px;
-            padding: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        .info-item {
-            margin-bottom: 6px;
-        }
-        .info-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .info-label {
+        .controls-panel h1 {
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #8c7e6c;
-            margin-right: 8px;
+            letter-spacing: -0.5px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
         }
 
-        /* 중앙 메인 직사각형 사진 영역 */
-        .center-hero {
-            flex: 1.2;
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #262626;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        input[type="file"] {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        button.download-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 15px;
+        }
+
+        button.download-btn:hover {
+            background-color: #e6e6e6;
+        }
+        
+        button.download-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* [3. 세로형 영화 포스터 프리뷰 스타일] */
+        .preview-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 20px;
+        }
+
+        /* 세로형 영화 포스터 비율 규격 (A4 비율 기반) */
+        .poster-frame {
+            width: 420px;
+            height: 594px;
+            background-color: #050505;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
+            padding: 35px 0px; /* 좌우 여백을 없애서 사진이 가로로 꽉 차게 변경 */
+            justify-content: space-between;
+        }
+
+        /* [상단 영역] 제목 */
+        .poster-top-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 0 25px;
+        }
+
+        #output-sub-title {
+            font-size: 0.75rem;
+            letter-spacing: 5px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        #output-main-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin: 0;
+            color: #fff;
+            word-break: keep-all;
+        }
+
+        /* [가운데 영역] 사진 공간 (테두리 제거 및 세로 크기 축소) */
+        .poster-middle-photo {
+            height: 280px; /* 세로 크기 고정 및 축소 (기본 flex에서 고정 크기로 변경) */
+            width: 100%;
+            background-color: #121212;
+            overflow: hidden;
+            display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px 0;
-        }
-
-        .rect-frame {
-            width: 100%;
-            height: 420px;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 5px solid #ffffff;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-            background-color: #f0eae1;
             position: relative;
+            /* 테두리(border, border-radius) 및 여백 완전 제거 */
         }
 
-        .rect-frame img {
+        .poster-middle-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: none;
         }
 
-        /* 중앙 하단 관계성 요약 한마디 */
-        .pair-relation-text {
-            margin-top: 20px;
-            font-family: 'CustomFont', serif; /* 관계성 문구에도 사용자 폰트 적용 */
-            font-size: 16px;
-            font-style: italic;
-            color: #7a6e5d;
+        .upload-placeholder {
+            font-size: 0.85rem;
+            color: #333;
+            letter-spacing: 1px;
             text-align: center;
             line-height: 1.6;
         }
 
-        /* 반응형 레이아웃 설정 (태블릿 및 모바일용) */
-        @media (max-width: 900px) {
-            body { padding: 20px 10px; }
-            .pair-container { padding: 30px 20px; }
-            .pair-content { flex-direction: column; }
-            
-            .center-hero {
-                order: -1;
-                margin-bottom: 20px;
+        /* [하단 영역] 설명 문장 및 정보 */
+        .poster-bottom-footer {
+            margin-top: 25px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 0 25px;
+        }
+
+        #output-sentence {
+            font-size: 0.9rem;
+            color: #ccc;
+            line-height: 1.7;
+            margin: 0;
+            white-space: pre-line;
+            word-break: keep-all;
+        }
+
+        .poster-credits {
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 1.5px;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 880px) {
+            .poster-frame {
+                width: 340px;
+                height: 480px;
+                padding: 25px 0px;
             }
-            .rect-frame { height: 300px; }
-            .character-card { width: 100%; }
+            .poster-middle-photo {
+                height: 220px;
+            }
+            #output-main-title { font-size: 1.5rem; }
+            #output-sentence { font-size: 0.8rem; }
         }
     </style>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
 
-<div class="pair-container">
-    <div class="pair-header">
-        <div class="pair-title">Eternity & Symphony</div>
-        <div class="pair-subtitle">Our Record of Precious Days</div>
-    </div>
-    
-    <div class="pair-content">
+<div class="main-container">
+    <div class="controls-panel">
+        <h1>포스터 스타일 변경 v3</h1>
         
-        <div class="character-card">
-            <div class="circle-group">
-                <div class="avatar-frame">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400" alt="Character A Main">
-                </div>
-                <div class="avatar-frame sub">
-                    <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=300" alt="Character A Object">
-                </div>
-            </div>
-            
-            <div class="character-name">아인 (Ein)</div>
-            
-            <div class="character-info">
-                <div class="info-item"><span class="info-label">Age</span>23세</div>
-                <div class="info-item"><span class="info-label">Height</span>178cm</div>
-                <div class="info-item"><span class="info-label">Color</span>Midnight Blue</div>
-                <div class="info-item" style="margin-top: 10px; border-top: 1px dashed #f0eae1; padding-top: 8px;">
-                    조용하고 차분한 사색가 타입. 밤하늘을 보며 생각에 잠기는 것을 좋아하며, 말수는 적지만 행동에서 다정함이 묻어납니다.
-                </div>
-            </div>
+        <div class="control-group">
+            <label>1. 가운데 사진 등록</label>
+            <input type="file" id="input-file" accept="image/*" onchange="loadPhoto(this)">
         </div>
 
-        <div class="center-hero">
-            <div class="rect-frame">
-                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800" alt="Main Pair Visual">
-            </div>
-            <div class="pair-relation-text">
-                "시간이 멈추어도 변하지 않을 우리만의 선율"
-            </div>
+        <div class="control-group">
+            <label>2. 상단 메인 제목</label>
+            <input type="text" id="input-main-title" placeholder="그 여름의 끝에서" onkeyup="updateText()">
         </div>
 
-        <div class="character-card">
-            <div class="circle-group">
-                <div class="avatar-frame">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400" alt="Character B Main">
-                </div>
-                <div class="avatar-frame sub">
-                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=300" alt="Character B Object">
-                </div>
-            </div>
-            
-            <div class="character-name">루나 (Luna)</div>
-            
-            <div class="character-info">
-                <div class="info-item"><span class="info-label">Age</span>21세</div>
-                <div class="info-item"><span class="info-label">Height</span>163cm</div>
-                <div class="info-item"><span class="info-label">Color</span>Soft Gold</div>
-                <div class="info-item" style="margin-top: 10px; border-top: 1px dashed #f0eae1; padding-top: 8px;">
-                    밝고 긍정적인 에너지를 전파하는 바이올리니스트. 차가운 공기를 단숨에 녹이는 따뜻한 미소와 솔직한 성격이 매력적입니다.
-                </div>
-            </div>
+        <div class="control-group">
+            <label>3. 상단 작은 부제목</label>
+            <input type="text" id="input-sub-title" placeholder="MEMORIES OF US" onkeyup="updateText()">
         </div>
 
+        <div class="control-group">
+            <label>4. 하단 감성 문장 (줄바꿈 가능)</label>
+            <textarea id="input-sentence" placeholder="함께 걷던 거리에 서면&#10;언제나 네가 서 있을 것만 같아." onkeyup="updateText()"></textarea>
+        </div>
+
+        <div class="control-group">
+            <label>5. 하단 크레딧 (이름/날짜 등)</label>
+            <input type="text" id="input-credits" placeholder="Directed by Pair  •  2026.06" onkeyup="updateText()">
+        </div>
+
+        <button class="download-btn" onclick="downloadPoster()">포스터 이미지 저장</button>
+    </div>
+
+    <div class="preview-container">
+        <div class="poster-frame" id="poster-area">
+            
+            <div class="poster-top-header">
+                <div id="output-sub-title">MEMORIES OF US</div>
+                <h2 id="output-main-title">그 여름의 끝에서</h2>
+            </div>
+
+            <div class="poster-middle-photo">
+                <img id="poster-image" src="#" alt="Poster Main">
+                <div class="upload-placeholder" id="placeholder-text">
+                    IMAGE AREA
+                </div>
+            </div>
+
+            <div class="poster-bottom-footer">
+                <p id="output-sentence">함께 걷던 거리에 서면&#10;언제나 네가 서 있을 것만 같아.</p>
+                <div class="poster-credits" id="output-credits">Directed by Pair  •  2026.06</div>
+            </div>
+
+        </div>
     </div>
 </div>
+
+<script>
+    // 1. 사진 불러오기 기능
+    function loadPhoto(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('poster-image');
+                const placeholder = document.getElementById('placeholder-text');
+                
+                img.src = e.target.result;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // 2. 텍스트 실시간 동기화 기능
+    function updateText() {
+        const mainTitle = document.getElementById('input-main-title').value || '그 여름의 끝에서';
+        const subTitle = document.getElementById('input-sub-title').value || 'MEMORIES OF US';
+        const sentence = document.getElementById('input-sentence').value || '함께 걷던 거리에 서면\n언제나 네가 서 있을 것만 같아.';
+        const credits = document.getElementById('input-credits').value || 'Directed by Pair  •  2026.06';
+
+        document.getElementById('output-main-title').innerText = mainTitle;
+        document.getElementById('output-sub-title').innerText = subTitle;
+        document.getElementById('output-sentence').innerText = sentence;
+        document.getElementById('output-credits').innerText = credits;
+    }
+
+    // 3. 고화질 이미지 캡처 및 다운로드 기능
+    function downloadPoster() {
+        const imgCheck = document.getElementById('poster-image').src.includes('data:image');
+        if(!imgCheck) {
+            alert('가운데 영역에 넣을 사진을 먼저 등록해 주세요.');
+            return;
+        }
+
+        const posterArea = document.getElementById('poster-area');
+        const btn = document.querySelector('.download-btn');
+        
+        btn.innerText = '포스터 생성 중...';
+        btn.disabled = true;
+
+        html2canvas(posterArea, {
+            scale: 3,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#050505'
+        }).then(canvas => {
+            const image = canvas.toDataURL("image/png");
+            const link = document.createElement('a');
+            link.href = image;
+            link.download = `movie-poster-${Date.now()}.png`;
+            link.click();
+
+            btn.innerText = '포스터 이미지 저장';
+            btn.disabled = false;
+        });
+    }
+</script>
 
 </body>
 </html>
