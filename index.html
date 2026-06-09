@@ -3,178 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>영화 포스터 페어틀 메이커 v3</title>
+    <title>시네마틱 페어틀 메이커 v4</title>
     <style>
-        /* [1. 전체 레이아웃 및 테마] */
+        /* 업로드해주신 사용자 지정 폰트 적용 (Base64 인코딩 내장) */
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('data:font/ttf;base64,AAEAAAASAQAABAAgR0RFRgA...') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         :root {
-            --bg-color: #0d0d0d;
+            --bg-color: #0a0a0c;
             --text-color: #ffffff;
-            --accent-color: #e5e5e5;
-            --panel-bg: #1a1a1a;
+            --accent-color: #ffffff;
+            --panel-bg: rgba(26, 26, 32, 0.85);
+            --input-bg: rgba(40, 40, 50, 0.6);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --input-focus: rgba(255, 255, 255, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'CustomFont', 'Noto Sans KR', sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            font-family: 'Noto Sans KR', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            margin: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(32, 32, 45, 0.7) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(20, 20, 35, 0.7) 0%, transparent 50%);
+            background-attachment: fixed;
         }
 
         .main-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 40px;
+            gap: 50px;
             justify-content: center;
-            align-items: flex-start;
-            max-width: 1200px;
+            align-items: center;
+            max-width: 1100px;
             width: 100%;
         }
 
-        /* [2. 제어판 스타일] */
+        /* 고급 미니멀 UI 제어판 */
         .controls-panel {
             flex: 1;
-            min-width: 320px;
-            max-width: 400px;
-            background-color: var(--panel-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            min-width: 340px;
+            max-width: 420px;
+            background: var(--panel-bg);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
         }
 
         .controls-panel h1 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
             letter-spacing: -0.5px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
+            margin-bottom: 30px;
+            color: #fff;
+            text-align: center;
         }
 
         .control-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-            color: #999;
+            margin-bottom: 9px;
+            font-size: 0.8rem;
+            color: #aaa;
+            font-weight: 600;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+        }
+
+        /* 파일 업로드 래퍼 */
+        .file-upload-wrapper {
+            position: relative;
+            width: 100%;
+            height: 48px;
+            background-color: var(--input-bg);
+            border: 1px dashed var(--input-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--input-focus);
+            background-color: rgba(50, 50, 65, 0.8);
+        }
+
+        .file-upload-wrapper span {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
         }
 
         input[type="text"], textarea {
             width: 100%;
-            padding: 12px;
-            background-color: #262626;
-            border: 1px solid #333;
+            padding: 14px 16px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
             color: #fff;
-            border-radius: 6px;
-            box-sizing: border-box;
+            border-radius: 12px;
             font-size: 0.95rem;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
         }
 
         input[type="text"]:focus, textarea:focus {
             outline: none;
-            border-color: #555;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
         }
 
         textarea {
-            resize: vertical;
-            height: 80px;
-        }
-
-        input[type="file"] {
-            color: #888;
-            font-size: 0.85rem;
+            resize: none;
+            height: 85px;
+            line-height: 1.5;
         }
 
         button.download-btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background-color: #fff;
-            color: #000;
+            color: #050505;
             border: none;
-            border-radius: 6px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            margin-top: 15px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 10px;
         }
 
         button.download-btn:hover {
-            background-color: #e6e6e6;
-        }
-        
-        button.download-btn:active {
-            transform: scale(0.99);
+            background-color: #e4e4e7;
+            transform: translateY(-2px);
         }
 
-        /* [3. 세로형 영화 포스터 프리뷰 스타일] */
+        /* 영화 포스터 프리뷰 스크린 */
         .preview-container {
             flex: 1;
             display: flex;
             justify-content: center;
-            position: sticky;
-            top: 20px;
         }
 
-        /* 세로형 영화 포스터 비율 규격 (A4 비율 기반) */
         .poster-frame {
             width: 420px;
             height: 594px;
-            background-color: #050505;
+            background-color: #030305;
             position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
-            padding: 35px 0px; /* 좌우 여백을 없애서 사진이 가로로 꽉 차게 변경 */
+            padding: 45px 0px;
             justify-content: space-between;
+            overflow: hidden;
         }
 
-        /* [상단 영역] 제목 */
         .poster-top-header {
             text-align: center;
             margin-bottom: 20px;
-            padding: 0 25px;
+            padding: 0 35px;
+            z-index: 2;
         }
 
         #output-sub-title {
             font-size: 0.75rem;
-            letter-spacing: 5px;
-            color: #888;
+            letter-spacing: 6px;
+            color: rgba(255, 255, 255, 0.4);
             text-transform: uppercase;
             margin-bottom: 8px;
         }
 
         #output-main-title {
-            font-size: 1.85rem;
-            font-weight: 700;
-            letter-spacing: 2px;
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: 3px;
             margin: 0;
             color: #fff;
             word-break: keep-all;
         }
 
-        /* [가운데 영역] 사진 공간 (테두리 제거 및 세로 크기 축소) */
-        .poster-middle-photo {
-            height: 280px; /* 세로 크기 고정 및 축소 (기본 flex에서 고정 크기로 변경) */
+        /* 시네마틱 이미지 & 가우시안 소프트 블러 레이어 */
+        .poster-middle-container {
+            position: relative;
+            height: 260px;
             width: 100%;
-            background-color: #121212;
             overflow: hidden;
+        }
+
+        .poster-middle-photo {
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a0c;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-            /* 테두리(border, border-radius) 및 여백 완전 제거 */
         }
 
         .poster-middle-photo img {
@@ -185,52 +238,67 @@
         }
 
         .upload-placeholder {
-            font-size: 0.85rem;
-            color: #333;
-            letter-spacing: 1px;
-            text-align: center;
-            line-height: 1.6;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 2px;
         }
 
-        /* [하단 영역] 설명 문장 및 정보 */
+        .blur-overlay-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, #030305 0%, rgba(3, 3, 5, 0.8) 30%, rgba(3, 3, 5, 0) 100%);
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            z-index: 1;
+        }
+
+        .blur-overlay-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to top, #030305 0%, rgba(3, 3, 5, 0.8) 30%, rgba(3, 3, 5, 0) 100%);
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            z-index: 1;
+        }
+
         .poster-bottom-footer {
-            margin-top: 25px;
+            margin-top: 20px;
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            padding: 0 25px;
+            gap: 18px;
+            padding: 0 35px;
+            z-index: 2;
         }
 
         #output-sentence {
-            font-size: 0.9rem;
-            color: #ccc;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
             line-height: 1.7;
             margin: 0;
             white-space: pre-line;
             word-break: keep-all;
+            font-weight: 300;
         }
 
         .poster-credits {
             font-size: 0.7rem;
-            color: #555;
-            letter-spacing: 1.5px;
-            margin-top: 5px;
+            color: rgba(255, 255, 255, 0.35);
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
-        /* 반응형 디자인 */
         @media (max-width: 880px) {
-            .poster-frame {
-                width: 340px;
-                height: 480px;
-                padding: 25px 0px;
-            }
-            .poster-middle-photo {
-                height: 220px;
-            }
-            #output-main-title { font-size: 1.5rem; }
-            #output-sentence { font-size: 0.8rem; }
+            .poster-frame { width: 340px; height: 480px; padding: 35px 0px; }
+            .poster-middle-container { height: 200px; }
+            #output-main-title { font-size: 1.6rem; }
+            #output-sentence { font-size: 0.85rem; }
         }
     </style>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -239,30 +307,33 @@
 
 <div class="main-container">
     <div class="controls-panel">
-        <h1>포스터 스타일 변경 v3</h1>
+        <h1>페어틀 메이커 v4</h1>
         
         <div class="control-group">
-            <label>1. 가운데 사진 등록</label>
-            <input type="file" id="input-file" accept="image/*" onchange="loadPhoto(this)">
+            <label>1. 포스터 사진 등록</label>
+            <div class="file-upload-wrapper">
+                <span id="file-status-text">이미지 파일 선택</span>
+                <input type="file" id="input-file" accept="image/*" onchange="loadPhoto(this)">
+            </div>
         </div>
 
         <div class="control-group">
-            <label>2. 상단 메인 제목</label>
+            <label>2. 메인 타이틀</label>
             <input type="text" id="input-main-title" placeholder="그 여름의 끝에서" onkeyup="updateText()">
         </div>
 
         <div class="control-group">
-            <label>3. 상단 작은 부제목</label>
+            <label>3. 서브 타이틀</label>
             <input type="text" id="input-sub-title" placeholder="MEMORIES OF US" onkeyup="updateText()">
         </div>
 
         <div class="control-group">
-            <label>4. 하단 감성 문장 (줄바꿈 가능)</label>
+            <label>4. 하단 감성 문장</label>
             <textarea id="input-sentence" placeholder="함께 걷던 거리에 서면&#10;언제나 네가 서 있을 것만 같아." onkeyup="updateText()"></textarea>
         </div>
 
         <div class="control-group">
-            <label>5. 하단 크레딧 (이름/날짜 등)</label>
+            <label>5. 푸터 크레딧</label>
             <input type="text" id="input-credits" placeholder="Directed by Pair  •  2026.06" onkeyup="updateText()">
         </div>
 
@@ -277,11 +348,13 @@
                 <h2 id="output-main-title">그 여름의 끝에서</h2>
             </div>
 
-            <div class="poster-middle-photo">
-                <img id="poster-image" src="#" alt="Poster Main">
-                <div class="upload-placeholder" id="placeholder-text">
-                    IMAGE AREA
+            <div class="poster-middle-container">
+                <div class="blur-overlay-top"></div>
+                <div class="poster-middle-photo">
+                    <img id="poster-image" src="#" alt="Poster Main">
+                    <div class="upload-placeholder" id="placeholder-text">IMAGE AREA</div>
                 </div>
+                <div class="blur-overlay-bottom"></div>
             </div>
 
             <div class="poster-bottom-footer">
@@ -294,23 +367,24 @@
 </div>
 
 <script>
-    // 1. 사진 불러오기 기능
     function loadPhoto(input) {
         if (input.files && input.files[0]) {
+            const file = input.files[0];
+            document.getElementById('file-status-text').innerText = file.name;
+            document.getElementById('file-status-text').style.color = '#fff';
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = document.getElementById('poster-image');
                 const placeholder = document.getElementById('placeholder-text');
-                
                 img.src = e.target.result;
                 img.style.display = 'block';
                 placeholder.style.display = 'none';
             };
-            reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(file);
         }
     }
 
-    // 2. 텍스트 실시간 동기화 기능
     function updateText() {
         const mainTitle = document.getElementById('input-main-title').value || '그 여름의 끝에서';
         const subTitle = document.getElementById('input-sub-title').value || 'MEMORIES OF US';
@@ -323,7 +397,6 @@
         document.getElementById('output-credits').innerText = credits;
     }
 
-    // 3. 고화질 이미지 캡처 및 다운로드 기능
     function downloadPoster() {
         const imgCheck = document.getElementById('poster-image').src.includes('data:image');
         if(!imgCheck) {
@@ -333,15 +406,14 @@
 
         const posterArea = document.getElementById('poster-area');
         const btn = document.querySelector('.download-btn');
-        
         btn.innerText = '포스터 생성 중...';
         btn.disabled = true;
 
         html2canvas(posterArea, {
-            scale: 3,
+            scale: 3, 
             useCORS: true,
             allowTaint: true,
-            backgroundColor: '#050505'
+            backgroundColor: '#030305'
         }).then(canvas => {
             const image = canvas.toDataURL("image/png");
             const link = document.createElement('a');
@@ -354,6 +426,5 @@
         });
     }
 </script>
-
 </body>
 </html>
